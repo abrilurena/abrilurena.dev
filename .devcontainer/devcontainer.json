@@ -34,6 +34,6 @@
     }
   },
   "postCreateCommand": "corepack enable && npm ci || npm i",
-  "postStartCommand": "",
+  "postStartCommand": "if [ -f package.json ] && npm run | grep -q \" dev\"; then (npm run dev >/tmp/dev.log 2>&1 &) ; fi",
   "remoteUser": "node"
 }
