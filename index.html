@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="index,follow" />
+  <title>Abril Urena — Portfolio & Projects</title>
+  <style>
+    :root{
+      /* LIGHT */
+      --bg:#eef2f6;
+      --bg-2:#f8fafc;
+      --card:#ffffff;
+      --ink:#0f172a;
+      --muted:#5b6472;
+      --ring: 17 24 39;
+      --edge:#e7edf3;
+      --accent: 255 168 76; /* orange glow for day */
+    }
+    [data-theme="navy"]{
+      --bg:#0b1220;
+      --bg-2:#0f1a2e;
+      --card:#0a1322;
+      --ink:#f8fafc;
+      --muted:#b7c2d6;
+      --ring: 191 219 254;
+      --edge: rgba(255,255,255,.10);
+      /* Multicolor glow, like your 404 Night */
+      --glow-colors: radial-gradient(circle at 20% 30%, rgba(236,72,153,.75), transparent 70%),
+                     radial-gradient(circle at 80% 40%, rgba(139,92,246,.75), transparent 70%),
+                     radial-gradient(circle at 50% 80%, rgba(59,130,246,.75), transparent 70%);
+    }
+
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font:16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, Noto Sans, "Apple Color Emoji","Segoe UI Emoji";
+      background: var(--bg);
+      color:var(--ink);
+      height:100%;
+      overflow-x:hidden;
+    }
+
+    /* Full-bleed hero with same glow & particles as 404 */
+    .hero{ position:relative; min-height:100dvh; overflow:hidden; }
+    .glow{ position:absolute; inset:0; z-index:0; }
+    .glow::before{
+      content:""; position:absolute; left:50%; top:44%; translate:-50% -50%;
+      width:min(900px, 90%); aspect-ratio:1/1; border-radius:50%;
+      background: radial-gradient(closest-side, rgba(var(--accent)/.55) 0%, rgba(var(--accent)/.18) 36%, rgba(255,255,255,0) 66%);
+      filter: blur(40px);
+    }
+    [data-theme="navy"] .glow::before{ background: var(--glow-colors); filter: blur(80px); }
+    .glow::after{
+      content:""; position:absolute; left:50%; top:44%; translate:-50% -50%;
+      width:min(1020px, 96%); aspect-ratio:1/1; border-radius:50%;
+      border:1px solid color-mix(in oklab, var(--ink) 10%, transparent);
+      background: radial-gradient(1000px 600px at 50% 0%, color-mix(in oklab, var(--ink) 7%, transparent), transparent 70%);
+    }
+
+    /* Particles like 404 */
+    .particles{ position:absolute; inset:0; z-index:0; overflow:hidden; }
+    .particles span{ position:absolute; width:6px; height:6px; border-radius:50%; bottom:-10px; animation: floatUp 10s linear infinite; }
+    .particles span{ background: rgba(0,0,0,.15); }
+    [data-theme="navy"] .particles span{ background: rgba(255,255,255,.4); }
+    .particles span:nth-child(1){ left: 20%; animation-delay: 0s; }
+    .particles span:nth-child(2){ left: 50%; animation-delay: 2s; }
+    .particles span:nth-child(3){ left: 80%; animation-delay: 4s; }
+    .particles span:nth-child(4){ left: 35%; animation-delay: 6s; }
+    .particles span:nth-child(5){ left: 65%; animation-delay: 8s; }
+    @keyframes floatUp{ 0%{transform:translateY(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-110vh);opacity:0} }
+
+    /* Navbar reused style */
+    .nav{ position:absolute; left:0; right:0; top:0; z-index:2; display:flex; align-items:center; justify-content:space-between; padding:20px 28px; color:var(--muted); }
+    .brand{ display:flex; align-items:center; gap:.6rem; font-weight:800; color:var(--ink); letter-spacing:.06em; }
+    .brand .dot{ width:8px; height:8px; border-radius:999px; background:currentColor; opacity:.9 }
+    .menu{ display:flex; gap:16px; align-items:center; font-weight:600; }
+    .menu a{ color:var(--ink); text-decoration:none; padding:.25rem .6rem; border-radius:8px; }
+    .menu a:hover{ background:color-mix(in oklab, var(--ink) 6%, transparent) }
+    .theme-toggle{ border:1px solid color-mix(in oklab, var(--ink) 10%, transparent); background:transparent; color:var(--ink); border-radius:999px; padding:.4rem .75rem; font-weight:700; cursor:pointer; }
+
+    /* Hero content */
+    .container{ position:relative; z-index:1; display:grid; place-items:center; min-height:100dvh; padding:96px 24px 56px; }
+    .stack{ text-align:center; max-width:900px; }
+    .title{ font-size: clamp(2.4rem, 7vw, 3.2rem); margin: 0 0 .5rem; font-weight:800; }
+    .tagline{ color:var(--muted); font-size: clamp(1rem, 2.4vw, 1.2rem); margin:0 0 1.5rem; }
+    .cta-row{ display:flex; gap:.75rem; justify-content:center; flex-wrap:wrap; }
+    .btn{ border:1px solid color-mix(in oklab, var(--ink) 12%, transparent); background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); color:var(--ink); border-radius:12px; padding:.9rem 1.1rem; font-weight:700; text-decoration:none; }
+    .btn:hover{ transform:translateY(-1px) }
+
+    /* Sections with same card aesthetic */
+    .section{ position:relative; z-index:1; padding: 32px 24px 64px; }
+    .grid{ max-width:1100px; margin:0 auto; display:grid; gap:16px; grid-template-columns: repeat(12, 1fr); }
+    .col{ grid-column: 2 / span 10; }
+    @media (max-width: 900px){ .col{ grid-column: 1 / -1; } }
+    h2{ font-size:1.4rem; margin: 0 0 12px; }
+    p{ margin:.5rem 0 1rem; color:var(--muted); }
+    ul{ margin:0; padding-left:1rem; }
+    li{ margin:.4rem 0; }
+
+    /* Footer */
+    footer{ text-align:center; color:var(--muted); padding:24px; border-top:1px solid color-mix(in oklab, var(--ink) 10%, transparent); }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="particles" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="glow" aria-hidden="true"></div>
+
+    <header class="nav" aria-label="Navigation">
+      <div class="brand" aria-label="Brand">
+        <a href="/" style="text-decoration:none; color:inherit; font-weight:800;">Abril Urena Portfolio</a>
+        <span class="dot" aria-hidden="true"></span>
+      </div>
+      <div class="menu" aria-label="Actions">
+        <a href="/">Home</a>
+        <button id="themeBtn" class="theme-toggle" aria-pressed="false" aria-label="Toggle theme">Day</button>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="stack">
+        <h1 class="title">Hi, I’m Abril — Software Engineer & Developer Advocate</h1>
+        <p class="tagline">Front‑End • UX • Accessibility · I’ve led initiatives reaching <strong>400K+ learners</strong> and created content with <strong>88M+ views</strong>.</p>
+        <div class="cta-row">
+          <a class="btn" href="https://github.com/abrilurena" target="_blank" rel="noopener">💻 GitHub Projects</a>
+          <a class="btn" href="https://abrildur.github.io/portfolio" target="_blank" rel="noopener">✨ UX Research Case Studies</a>
+          <a class="btn" href="https://github.com/abrilurena/abrilurena" target="_blank" rel="noopener">📖 GitHub Profile</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="grid">
+      <div class="col">
+        <h2>About me</h2>
+        <p>I design developer education that scales — hands‑on content, livestreams, and OSS. I speak English, Spanish, and a bit of German. Pronouns: she/her.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="grid">
+      <div class="col">
+        <h2>Highlights</h2>
+        <ul>
+          <li>Moderator at <strong>VS Code Discussions</strong> · Microsoft OSS Community.</li>
+          <li>Livestreams I’ve designed & led: Mes de Datos, Certifícate con GitHub, Get Certified with GitHub (EN), Festival Web.</li>
+          <li>Global initiatives I co‑created: MLSA LATAM Info Session; Microsoft Build & GitHub Universe Skills Challenges.</li>
+          <li>Microsoft Learn author: GitHub Copilot (Python, JS, Advanced), Copilot for Prototyping/MVP.</li>
+          <li>Learning paths: Mes de Datos, Festival Web, VS Code Day 2024, GitHub Universe 2023, Tips to bring your AI idea to life.</li>
+          <li>OSS contributions: Generative AI for Beginners, Web Dev for Beginners, Workshop Library, Codespaces templates.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 Abril Urena
+  </footer>
+
+  <script>
+    // Keyboard shortcuts
+    window.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape') history.back();
+      if(e.key.toLowerCase() === 'h') location.href = '/';
+    });
+    // Theme toggle (Light <-> Navy)
+    const btn = document.getElementById('themeBtn');
+    function setTheme(mode){
+      if(mode === 'navy'){ document.documentElement.setAttribute('data-theme','navy'); btn.textContent='Night'; btn.setAttribute('aria-pressed','true'); }
+      else { document.documentElement.removeAttribute('data-theme'); btn.textContent='Day'; btn.setAttribute('aria-pressed','false'); }
+      localStorage.setItem('abril-theme', mode || 'light');
+    }
+    const saved = localStorage.getItem('abril-theme');
+    setTheme(saved === 'navy' ? 'navy' : 'light');
+    btn.addEventListener('click', ()=> setTheme(document.documentElement.getAttribute('data-theme')==='navy' ? 'light' : 'navy'));
+  </script>
+</body>
+</html>
