@@ -4,10 +4,9 @@
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "20",
-      "nodeGypDependencies": true   // build-essential + python para paquetes nativos
+      "nodeGypDependencies": true
     },
-    "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/pnpm:1": { "version": "9" }  // opcional, por si algún día usas pnpm
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   "containerEnv": {
     "NEXT_TELEMETRY_DISABLED": "1"
@@ -33,7 +32,7 @@
       }
     }
   },
-  "postCreateCommand": "corepack enable && npm ci || npm i",
-  "postStartCommand": "if [ -f package.json ] && npm run | grep -q \" dev\"; then (npm run dev >/tmp/dev.log 2>&1 &) ; fi",
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y git-lfs && git lfs install && corepack enable && corepack prepare pnpm@9 --activate || true && (npm ci || npm i)",
+  "postStartCommand": "bash -lc 'if [ -f package.json ] && npm run | grep -q \" dev\"; then nohup npm run dev >/tmp/dev.log 2>&1 & fi'",
   "remoteUser": "node"
 }
