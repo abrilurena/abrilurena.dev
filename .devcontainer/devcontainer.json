@@ -1,14 +1,39 @@
 {
-  "name": "web-portfolio",
+  "name": "abril-portfolio",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
-  "postCreateCommand": "npm i",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20",
+      "nodeGypDependencies": true   // build-essential + python para paquetes nativos
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/pnpm:1": { "version": "9" }  // opcional, por si algún día usas pnpm
+  },
+  "containerEnv": {
+    "NEXT_TELEMETRY_DISABLED": "1"
+  },
   "forwardPorts": [5173, 3000],
+  "portsAttributes": {
+    "5173": { "label": "Vite", "onAutoForward": "openBrowser" },
+    "3000": { "label": "Next.js", "onAutoForward": "openBrowser" }
+  },
   "customizations": {
     "vscode": {
       "extensions": [
         "esbenp.prettier-vscode",
-        "bradlc.vscode-tailwindcss"
-      ]
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss",
+        "github.vscode-github-actions"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "files.eol": "\n",
+        "typescript.tsdk": "node_modules/typescript/lib"
+      }
     }
-  }
+  },
+  "postCreateCommand": "corepack enable && npm ci || npm i",
+  "postStartCommand": "",
+  "remoteUser": "node"
 }
